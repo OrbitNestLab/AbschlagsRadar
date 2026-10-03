@@ -56,3 +56,6 @@ Werten, tatsächlichen Entity-IDs und Kopierknöpfen. Ein Klick auf den Wert öf
 Entität in Home Assistant in einem neuen Fenster. Nutze die IDs für Automationen und
 Diagrammkarten. Fehlende und deaktivierte Werte sind als solche gekennzeichnet.
 Bei eingeschränktem Zwischenablagezugriff lässt sich die markierte ID manuell kopieren.
+
+
+Die App übernimmt die Sprache des angemeldeten Home-Assistant-Nutzers. Deutsch und Englisch werden unterstützt; andere Sprachen verwenden englische App-Texte. Ohne zugänglichen HA-Sprachkontext gilt die Browsersprache. Vertragsnamen, Entity-IDs und gespeicherte Zahlen werden nicht übersetzt.

@@ -1,6 +1,6 @@
 [project]
 name = "abschlagsradar"
-version = "0.4.4"
+version = "0.4.5"
 description = "Local Home Assistant energy billing forecast"
 requires-python = ">=3.12"
 license = "MIT"

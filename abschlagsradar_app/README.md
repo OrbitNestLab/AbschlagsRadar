@@ -24,3 +24,6 @@ eine Schätzung; aktuelle Ablesungen und der richtige Gas-Umrechnungsfaktor sind
 entscheidend. Zahlungsaufträge beim Anbieter bleiben in deiner Hand.
 
 Siehe **Dokumentation** für Einrichtung, Berechnungsannahmen und Sicherungen.
+
+
+Die App übernimmt die Sprache des angemeldeten Home-Assistant-Nutzers. Deutsch und Englisch werden unterstützt; andere Sprachen verwenden englische App-Texte. Ohne zugänglichen HA-Sprachkontext gilt die Browsersprache. Vertragsnamen, Entity-IDs und gespeicherte Zahlen werden nicht übersetzt.

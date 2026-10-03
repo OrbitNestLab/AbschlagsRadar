@@ -104,10 +104,17 @@ async function fixture() {
     apiError: false,
     cssError: false,
     releaseCss,
+    haLanguage: "en",
   };
   const server = http.createServer(async (req, res) => {
     try {
       res.setHeader("Cache-Control", "no-store");
+      if (req.url === "/ha-parent") {
+        res.setHeader("Content-Type", "text/html");
+        return res.end(
+          `<home-assistant></home-assistant><script>document.querySelector("home-assistant").hass={locale:{language:${JSON.stringify(state.haLanguage)}}};</script><iframe title="App" src="/" style="width:1400px;height:1000px;border:0"></iframe>`,
+        );
+      }
       if (
         req.method === "POST" &&
         ["/api/restore/preview", "/api/restore"].includes(req.url)
@@ -147,9 +154,15 @@ async function fixture() {
       const file =
         req.url === "/" ? "index.html" : req.url?.replace(/^\/assets\//, "");
       if (
-        !["index.html", "app.css", "shell.css", "app.js", "boot.js"].includes(
-          file,
-        )
+        ![
+          "index.html",
+          "app.css",
+          "shell.css",
+          "app.js",
+          "boot.js",
+          "i18n.js",
+          "translations/en.json",
+        ].includes(file)
       ) {
         res.statusCode = 404;
         return res.end();
@@ -168,7 +181,9 @@ async function fixture() {
           ? "text/css"
           : file.endsWith(".js")
             ? "text/javascript"
-            : "text/html",
+            : file.endsWith(".json")
+              ? "application/json"
+              : "text/html",
       );
       res.end(await fs.readFile(path.join(WEB, file)));
     } catch (error) {
@@ -332,13 +347,11 @@ test("Empty App restores both contracts without creating blank targets first", a
       version: 1,
       contracts: [contract("electricity"), contract("gas")],
     };
-    await page
-      .locator('input[name="backup"]')
-      .setInputFiles({
-        name: "backup.json",
-        mimeType: "application/json",
-        buffer: Buffer.from(JSON.stringify(backup)),
-      });
+    await page.locator('input[name="backup"]').setInputFiles({
+      name: "backup.json",
+      mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(backup)),
+    });
     await page.getByRole("button", { name: "Daten prüfen" }).click();
     assert.equal(await page.locator('[name="mode"]').inputValue(), "create");
     assert.equal(
@@ -431,5 +444,135 @@ test("Entity tab uses registered IDs, explicit unknown states and HTTP-compatibl
   } finally {
     await engine.close();
     await site.close();
+  }
+});
+
+test("App follows Home Assistant English even with a German browser, preserving contract data", async () => {
+  const state = await fixture();
+  state.rows[0].settings.name = "Electricity Test";
+  state.rows[1].settings.name = "Gas Test";
+  const englishEntityNames = {
+    consumption: "Current consumption",
+    forecast_cost: "Forecast annual costs",
+    daily_forecast: "Daily forecast",
+  };
+  for (const row of state.rows)
+    for (const entity of row.entities)
+      entity.name = englishEntityNames[entity.key] || entity.name;
+  const instance = await browser();
+  try {
+    const context = await instance.newContext({ locale: "de-DE" });
+    const page = await context.newPage();
+    await page.goto(state.url + "ha-parent");
+    state.releaseCss();
+    const app = page
+      .frameLocator('iframe[title="App"]')
+      .locator("abschlagsradar-app");
+    await app.getByText("YOUR ENERGY AT A GLANCE", { exact: true }).waitFor();
+    if (process.env.RELEASE_SCREENSHOTS) {
+      await fs.mkdir(process.env.RELEASE_SCREENSHOTS, { recursive: true });
+      await app.screenshot({
+        path: path.join(process.env.RELEASE_SCREENSHOTS, "overview-en.png"),
+      });
+    }
+    assert.equal(
+      await app.getByText("Electricity Test", { exact: true }).count(),
+      1,
+    );
+    await app.locator('[data-open="electricity"]').click();
+    if (process.env.RELEASE_SCREENSHOTS)
+      await app.screenshot({
+        path: path.join(process.env.RELEASE_SCREENSHOTS, "contract-en.png"),
+      });
+    await app
+      .getByRole("button", { name: "Monthly payments", exact: true })
+      .click();
+    await app
+      .getByText("Recommended monthly payment for the rest of the year", {
+        exact: true,
+      })
+      .waitFor();
+    await app.getByRole("button", { name: "Add change", exact: true }).click();
+    await app.getByRole("button", { name: "Save", exact: true }).waitFor();
+    await app.getByRole("button", { name: "Cancel", exact: true }).click();
+    await app
+      .getByRole("button", { name: "Meter readings", exact: true })
+      .click();
+    await app.getByRole("button", { name: "Read photo", exact: true }).click();
+    await app.getByText("Read meter photo", { exact: true }).waitFor();
+    await app.getByRole("button", { name: "Cancel", exact: true }).click();
+    await app.getByRole("button", { name: "HA entities", exact: true }).click();
+    await app.getByText("Use your values elsewhere", { exact: true }).waitFor();
+    if (process.env.RELEASE_SCREENSHOTS)
+      await app.screenshot({
+        path: path.join(process.env.RELEASE_SCREENSHOTS, "entities-en.png"),
+      });
+    await app.locator("[data-home]").first().click();
+    await app
+      .getByRole("button", { name: "Restore backup", exact: true })
+      .click();
+    await app
+      .getByRole("button", { name: "Check data", exact: true })
+      .waitFor();
+    await app.getByRole("button", { name: "Cancel", exact: true }).click();
+    await app
+      .getByRole("button", { name: "+ Add contract", exact: true })
+      .click();
+    await app
+      .getByRole("button", { name: "ϟ Electricity", exact: true })
+      .click();
+    await app
+      .getByRole("button", { name: "Create contract", exact: true })
+      .waitFor();
+    assert.equal(
+      await app.getByLabel("Contract name", { exact: true }).inputValue(),
+      "Electricity",
+    );
+    await app.getByRole("button", { name: "Cancel", exact: true }).click();
+    // No mutation was submitted: names and JSON values remain unchanged.
+    assert.equal(state.rows[0].settings.name, "Electricity Test");
+    if (process.env.RELEASE_SCREENSHOTS) {
+      await page.setViewportSize({ width: 390, height: 844 });
+      await page.locator('iframe[title="App"]').evaluate((frame) => {
+        frame.style.width = "390px";
+        frame.style.height = "844px";
+      });
+      await app.locator("[data-home]").first().click();
+      await app.screenshot({
+        path: path.join(process.env.RELEASE_SCREENSHOTS, "mobile-en.png"),
+      });
+    }
+    await context.close();
+  } finally {
+    await instance.close();
+    await state.close();
+  }
+});
+
+test("German HA language overrides an English browser", async () => {
+  const state = await fixture();
+  state.haLanguage = "de";
+  const instance = await browser();
+  try {
+    const context = await instance.newContext({ locale: "en-US" });
+    const page = await context.newPage();
+    await page.goto(state.url + "ha-parent");
+    state.releaseCss();
+    await page
+      .frameLocator('iframe[title="App"]')
+      .locator("abschlagsradar-app")
+      .getByText("DEINE ENERGIE IM BLICK", { exact: true })
+      .waitFor();
+    if (process.env.RELEASE_SCREENSHOTS)
+      await page
+        .frameLocator('iframe[title="App"]')
+        .locator("abschlagsradar-app")
+        .screenshot({
+          path: path.join(process.env.RELEASE_SCREENSHOTS, "overview-de.png"),
+        });
+    await context.close();
+  } finally {
+    await instance.close();
+    await state.close();
   }
 });

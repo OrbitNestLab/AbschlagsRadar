@@ -1,4 +1,4 @@
-# AbschlagsRadar App · v0.4.4
+# AbschlagsRadar App · v0.4.5
 
 ![AbschlagsRadar](abschlagsradar_app/icon.png)
 
@@ -12,6 +12,29 @@ Für Nutzer gibt es **eine App-Installation**. Die App bringt ihre interne
 Home-Assistant-Sensoranbindung und den lokalen Fotoscan mit. Sie öffnet sich in der
 Seitenleiste; ein zusätzliches Dashboard, HACS oder ein separates Passwort entfällt.
 Experimentelle Version für AMD64. Die Hinweise zu Prognosen, Fotoscan und Sicherungen unten beachten.
+
+Die App übernimmt die Sprache des angemeldeten Home-Assistant-Nutzers. Deutsch und
+Englisch sind enthalten; bei weiteren Sprachen verwendet die App englische Texte.
+Zahlen und Datumswerte folgen der gewählten Region.
+
+## Einblick
+
+Alle Bilder zeigen erfundene Testverträge und enthalten keine privaten Vertragsdaten.
+
+![Deutsche Startseite mit Strom- und Gasprognose](docs/images/overview-de.png)
+
+![Englische Vertragsübersicht mit Jahresprognose und Abschlagsempfehlung](docs/images/contract-en.png)
+
+![Englische Home-Assistant-Entitäten für Automationen und Diagramme](docs/images/entities-en.png)
+
+<details>
+<summary>Weitere Ansichten</summary>
+
+![Englische Startseite](docs/images/overview-en.png)
+
+![Englische Mobilansicht](docs/images/mobile-en.png)
+
+</details>
 
 ## Installieren
 

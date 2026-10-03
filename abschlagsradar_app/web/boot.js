@@ -13,13 +13,14 @@
       try {
         error = (await response.json()).error;
       } catch (e) {
-        error = "Bitte die App über die Home-Assistant-Seitenleiste öffnen.";
+        error = t("Bitte die App über die Home-Assistant-Seitenleiste öffnen.");
       }
-      throw Error(error || "Anfrage fehlgeschlagen");
+      throw Error(error || t("Anfrage fehlgeschlagen"));
     }
     return response.json();
   }
   try {
+    await RadarI18n.initialize(endpoint("assets/"));
     const session = await json("api/session");
     element.assetBase = endpoint("assets/");
     element.apiBase = base.href;

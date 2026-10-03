@@ -1,20 +1,71 @@
 /* Pure display assertions, using the actual app code without a browser runtime. */
-const fs = require('node:fs');
-const vm = require('node:vm');
-const assert = require('node:assert/strict');
-const path = require('node:path');
-const source = fs.readFileSync(path.join(__dirname, '../abschlagsradar_app/web/app.js'), 'utf8');
-const context = vm.createContext({HTMLElement: class {}, customElements: {define() {}}, Intl, Date});
+const fs = require("node:fs");
+const vm = require("node:vm");
+const assert = require("node:assert/strict");
+const path = require("node:path");
+const source = fs.readFileSync(
+  path.join(__dirname, "../abschlagsradar_app/web/app.js"),
+  "utf8",
+);
+const context = vm.createContext({
+  HTMLElement: class {},
+  customElements: { define() {} },
+  Intl,
+  Date,
+});
+vm.runInContext(
+  fs.readFileSync(
+    path.join(__dirname, "../abschlagsradar_app/web/i18n.js"),
+    "utf8",
+  ),
+  context,
+);
 vm.runInContext(source, context);
-const evaluate = code => vm.runInContext(code, context);
-assert.equal(evaluate('signedBalance(183.24).text'), '- 183,24 €');
-assert.equal(evaluate('signedBalance(183.24).cls'), 'payment-due');
-assert.equal(evaluate('signedBalance(-94.5).text'), '+ 94,50 €');
-assert.equal(evaluate('signedBalance(-94.5).cls'), 'credit');
-assert.equal(evaluate('signedBalance(null).text'), 'Noch offen');
-assert.equal(evaluate('signedBalance(0.5).text'), '0,50 €');
-assert.equal(evaluate('num(11.19, "ct/kWh")'), '11,19 ct/kWh');
-assert.equal(evaluate('num(32670.567, "m³")'), '32.670,567 m³');
-assert.equal(evaluate('num(21006.8, "kWh", 3)'), '21.006,8 kWh');
-assert.equal(evaluate(String.raw`escape("<script>&\"")`), '&lt;script&gt;&amp;&quot;');
-console.log('Frontend: signs, money, exact meter decimals and HTML escaping passed.');
+const evaluate = (code) => vm.runInContext(code, context);
+assert.equal(evaluate("signedBalance(183.24).text"), "- 183,24 €");
+assert.equal(evaluate("signedBalance(183.24).cls"), "payment-due");
+assert.equal(evaluate("signedBalance(-94.5).text"), "+ 94,50 €");
+assert.equal(evaluate("signedBalance(-94.5).cls"), "credit");
+assert.equal(evaluate("signedBalance(null).text"), "Noch offen");
+assert.equal(evaluate("signedBalance(0.5).text"), "0,50 €");
+assert.equal(evaluate('num(11.19, "ct/kWh")'), "11,19 ct/kWh");
+assert.equal(evaluate('num(32670.567, "m³")'), "32.670,567 m³");
+assert.equal(evaluate('num(21006.8, "kWh", 3)'), "21.006,8 kWh");
+assert.equal(
+  evaluate(String.raw`escape("<script>&\"")`),
+  "&lt;script&gt;&amp;&quot;",
+);
+console.log(
+  "Frontend: signs, money, exact meter decimals and HTML escaping passed.",
+);
+const catalog = JSON.parse(
+  fs.readFileSync(
+    path.join(__dirname, "../abschlagsradar_app/web/translations/en.json"),
+    "utf8",
+  ),
+);
+context.englishCatalog = catalog;
+evaluate('RadarI18n.setCatalog(englishCatalog); RadarI18n.setLocale("en-US")');
+assert.equal(evaluate("signedBalance(183.24).text"), "- 183.24 €");
+assert.equal(evaluate('num(32670.567, "m³")'), "32,670.567 m³");
+assert.equal(evaluate('t("Abschlag ändern")'), "Change monthly payment");
+assert.equal(
+  evaluate('msg`Vertrag öffnen ${"Strom <script>"}`'),
+  "Open contract Strom <script>",
+);
+assert.equal(
+  evaluate('t("Die Sicherung darf höchstens 12 MB groß sein.")'),
+  "The backup must be no larger than 12 MB.",
+);
+assert.equal(
+  evaluate('RadarI18n.preferredLanguage({locale:{language:"en"}})'),
+  "en",
+);
+evaluate('RadarI18n.setLocale("fr-FR")');
+assert.equal(evaluate("RadarI18n.language"), "en");
+assert.equal(evaluate('t("Abbrechen")'), "Cancel");
+evaluate('RadarI18n.setLocale("de-DE")');
+assert.equal(evaluate('t("Abschlag ändern")'), "Abschlag ändern");
+console.log(
+  "Localization: HA preference, fallback, regional formats and unchanged dynamic content passed.",
+);

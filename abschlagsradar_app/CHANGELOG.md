@@ -1,3 +1,9 @@
+# 0.4.5
+
+- App übernimmt die Home-Assistant-Sprache; Deutsch und Englisch, Englisch als Rückfall für weitere Sprachen.
+- Zahlen und Datum folgen der gewählten Sprache. Vertragsnamen und Eingaben bleiben unverändert.
+- Öffentlicher AMD64-Image-Build, Installationslink, Icon und vertrauliche Sicherheitsmeldungen.
+
 # 0.4.4
 
 - JSON-Sicherungen können alle oder einzelne Verträge in einer leeren App neu anlegen.

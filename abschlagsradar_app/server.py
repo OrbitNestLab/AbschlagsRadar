@@ -14,7 +14,7 @@ from pathlib import Path
 from aiohttp import ClientSession, ClientTimeout, ClientWSTimeout, web
 from store import SnapshotStore
 
-VERSION = "0.4.4"
+VERSION = "0.4.5"
 WEB = Path(__file__).parent / "web"
 TRUSTED_INGRESS = {"172.30.32.2"}
 ERROR_MESSAGES = {
@@ -26,7 +26,7 @@ ERROR_MESSAGES = {
     "decreasing_meter": "Der Zählerstand darf nicht kleiner als ein älterer Stand sein.",
     "overlapping_intervals": "Verbrauchsintervalle dürfen sich nicht überschneiden.",
     "future_reading": "Eine Ablesung darf nicht in der Zukunft liegen.",
-    "future_payment": "Zukünftige Zahlungen bitte als vorgemerkt erfassen.",
+    "future_payment": "Zahlungen dürfen nicht in der Zukunft liegen.",
     "history_too_long": "Der historische Zeitraum darf höchstens 100 Jahre umfassen.",
     "no_digits": "Keine eindeutigen Ziffern erkannt. Bitte die Anzeige scharf und nah fotografieren.",
     "invalid_image": "Bitte ein gültiges JPEG- oder PNG-Foto auswählen.",
