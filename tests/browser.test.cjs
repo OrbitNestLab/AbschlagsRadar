@@ -104,7 +104,7 @@ async function fixture() {
     apiError: false,
     cssError: false,
     releaseCss,
-    haLanguage: "en",
+    haLanguage: "de",
   };
   const server = http.createServer(async (req, res) => {
     try {
@@ -449,6 +449,7 @@ test("Entity tab uses registered IDs, explicit unknown states and HTTP-compatibl
 
 test("App follows Home Assistant English even with a German browser, preserving contract data", async () => {
   const state = await fixture();
+  state.haLanguage = "en";
   state.rows[0].settings.name = "Electricity Test";
   state.rows[1].settings.name = "Gas Test";
   const englishEntityNames = {
