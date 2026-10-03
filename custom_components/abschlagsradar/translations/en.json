@@ -1,0 +1,240 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "What would you like to set up?",
+        "menu_options": {
+          "electricity": "Electricity",
+          "gas": "Gas"
+        }
+      },
+      "electricity": {
+        "title": "Set up electricity",
+        "description": "Add an electricity or gas contract. Optionally select a cumulative meter; otherwise enter readings manually or by photo. Prices include taxes, in euros.",
+        "data": {
+          "name": "Contract name",
+          "energy_type": "Energy type",
+          "source_sensor": "Cumulative consumption meter",
+          "source_unit": "Meter unit",
+          "price": "Unit price (EUR/kWh)",
+          "base": "Base charge (EUR)",
+          "base_period": "Base charge period",
+          "payment": "Monthly installment (EUR)",
+          "payment_day": "Payment day (1–28)",
+          "billing_start": "Billing period start",
+          "gas_mode": "Gas usage",
+          "gas_factor": "Gas conversion (kWh/m³)",
+          "annual_estimate": "Fallback annual consumption (kWh)"
+        }
+      },
+      "gas": {
+        "title": "Set up gas",
+        "description": "Add an electricity or gas contract. Optionally select a cumulative meter; otherwise enter readings manually or by photo. Prices include taxes, in euros.",
+        "data": {
+          "name": "Contract name",
+          "energy_type": "Energy type",
+          "source_sensor": "Cumulative consumption meter",
+          "source_unit": "Meter unit",
+          "price": "Unit price (EUR/kWh)",
+          "base": "Base charge (EUR)",
+          "base_period": "Base charge period",
+          "payment": "Monthly installment (EUR)",
+          "payment_day": "Payment day (1–28)",
+          "billing_start": "Billing period start",
+          "gas_mode": "Gas usage",
+          "gas_factor": "Gas conversion (kWh/m³)",
+          "annual_estimate": "Fallback annual consumption (kWh)"
+        }
+      }
+    },
+    "error": {
+      "invalid_date": "Invalid date.",
+      "invalid_number": "Use finite nonnegative numbers.",
+      "invalid_settings": "Invalid settings.",
+      "invalid_history": "Invalid JSON history; see README.",
+      "duplicate_date": "Duplicate date.",
+      "decreasing_meter": "Meter readings must not decrease. Use direct intervals for meter replacements.",
+      "overlapping_intervals": "Consumption intervals overlap.",
+      "source_unit_mismatch": "Sensor unit does not match the selected unit.",
+      "identity_change": "Create a new contract for a different energy type or meter unit.",
+      "history_too_long": "History must span no more than 100 years."
+    },
+    "abort": {
+      "already_configured": "This contract is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "settings": {
+        "title": "Edit contract",
+        "data": {
+          "name": "Contract name",
+          "energy_type": "Energy type",
+          "source_sensor": "Cumulative consumption meter",
+          "source_unit": "Meter unit",
+          "price": "Unit price (EUR/kWh)",
+          "base": "Base charge (EUR)",
+          "base_period": "Base charge period",
+          "payment": "Monthly installment (EUR)",
+          "payment_day": "Payment day (1–28)",
+          "billing_start": "Billing period start",
+          "gas_mode": "Gas usage",
+          "gas_factor": "Gas conversion (kWh/m³)",
+          "annual_estimate": "Fallback annual consumption (kWh)"
+        }
+      },
+      "history": {
+        "title": "Edit history",
+        "description": "Replace the complete JSON history (readings, intervals, tariffs, payments). ISO or DD.MM.YYYY dates. See README examples. Automatic readings remain stored separately.",
+        "data": {
+          "history_json": "History (JSON)"
+        }
+      },
+      "init": {
+        "menu_options": {
+          "settings": "Edit contract",
+          "history": "Historical data and tariffs",
+          "reading": "Add meter reading",
+          "clear_samples": "Clear automatic samples",
+          "installment": "Change installment"
+        },
+        "description": "For normal use and photo capture, open AbschlagsRadar in the sidebar."
+      },
+      "reading": {
+        "title": "Review and save meter reading",
+        "description": "Unit: {unit}. Check meter ID, decimals and import register. Replaces an existing manual reading on the same date.",
+        "data": {
+          "date": "Reading date",
+          "value": "Meter reading"
+        }
+      },
+      "clear_samples": {
+        "title": "Clear automatic samples",
+        "description": "Delete all automatically sampled readings for this contract? Manual history is retained. Useful after meter replacement. Submit to confirm."
+      },
+      "installment": {
+        "title": "Change installment",
+        "description": "New monthly installment from this date. Earlier due dates retain their previous amounts. Actual payments can also be entered in history.",
+        "data": {
+          "date": "Effective from",
+          "amount": "Monthly installment (EUR)"
+        }
+      }
+    },
+    "error": {
+      "invalid_date": "Invalid date.",
+      "invalid_number": "Use finite nonnegative numbers.",
+      "invalid_settings": "Invalid settings.",
+      "invalid_history": "Invalid JSON history; see README.",
+      "duplicate_date": "Duplicate date.",
+      "decreasing_meter": "Meter readings must not decrease. Use direct intervals for meter replacements.",
+      "overlapping_intervals": "Consumption intervals overlap.",
+      "source_unit_mismatch": "Sensor unit does not match the selected unit.",
+      "identity_change": "Create a new contract for a different energy type or meter unit.",
+      "future_reading": "Reading date cannot be in the future.",
+      "history_too_long": "History must span no more than 100 years."
+    }
+  },
+  "selector": {
+    "energy_type": {
+      "options": {
+        "electricity": "Electricity",
+        "gas": "Gas"
+      }
+    },
+    "base_period": {
+      "options": {
+        "monthly": "Monthly",
+        "yearly": "Yearly"
+      }
+    },
+    "gas_mode": {
+      "options": {
+        "heating": "Heating only",
+        "heating_hot_water": "Heating and hot water",
+        "uniform": "Other uniform usage"
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "consumption": {
+        "name": "Consumption so far"
+      },
+      "cost_so_far": {
+        "name": "Cost so far"
+      },
+      "paid": {
+        "name": "Paid installments"
+      },
+      "forecast_consumption": {
+        "name": "Forecast annual consumption"
+      },
+      "forecast_cost": {
+        "name": "Forecast annual cost"
+      },
+      "balance": {
+        "name": "Expected balance"
+      },
+      "expected_payment": {
+        "name": "Expected payment due"
+      },
+      "expected_credit": {
+        "name": "Expected credit"
+      },
+      "budget_status": {
+        "name": "Budget status",
+        "state": {
+          "payment_due": "Payment due",
+          "credit": "Credit",
+          "balanced": "Balanced"
+        }
+      },
+      "coverage": {
+        "name": "Data coverage"
+      },
+      "previous_consumption": {
+        "name": "Previous year consumption"
+      },
+      "comparison": {
+        "name": "Change from previous year"
+      },
+      "daily_consumption": {
+        "name": "Daily consumption"
+      },
+      "daily_previous": {
+        "name": "Previous year daily consumption"
+      },
+      "daily_forecast": {
+        "name": "Daily forecast"
+      },
+      "history_weight": {
+        "name": "Personal history weight"
+      },
+      "current_installment": {
+        "name": "Current installment"
+      },
+      "recommended_installment": {
+        "name": "Recommended installment"
+      },
+      "installment_adjustment": {
+        "name": "Recommended installment adjustment"
+      },
+      "remaining_installments": {
+        "name": "Remaining installments"
+      },
+      "planned_installments": {
+        "name": "Installments for billing year"
+      },
+      "pending_installments": {
+        "name": "Pending installments"
+      },
+      "average_paid_installment": {
+        "name": "Average paid installment this year"
+      },
+      "next_year_installment": {
+        "name": "Recommended installment next year"
+      }
+    }
+  }
+}

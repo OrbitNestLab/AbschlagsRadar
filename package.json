@@ -1,0 +1,13 @@
+{
+  "name": "abschlagsradar-browser-validation",
+  "version": "0.4.4",
+  "private": true,
+  "description": "Browser regression checks for the Home Assistant App",
+  "scripts": {
+    "test:browser": "node --test tests/browser.test.cjs"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1"
+  },
+  "packageManager": "pnpm@11.19.0"
+}

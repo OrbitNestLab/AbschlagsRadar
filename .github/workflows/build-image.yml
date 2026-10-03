@@ -1,0 +1,51 @@
+name: Publish AMD64 App image
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    uses: ./.github/workflows/validate.yml
+  publish:
+    needs: validate
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Read validated App version
+        id: app
+        run: |
+          python -m pip install PyYAML==6.0.3
+          python tools/validate_release.py --public
+          python - <<'PYTHON' >> "$GITHUB_OUTPUT"
+          from pathlib import Path
+          import yaml
+          print("version=" + yaml.safe_load(Path("abschlagsradar_app/config.yaml").read_text())["version"])
+          PYTHON
+      - name: Build AMD64 App
+        env:
+          APP_VERSION: ${{ steps.app.outputs.version }}
+        run: |
+          docker build --pull --platform linux/amd64 --tag "ghcr.io/orbitnestlab/abschlagsradar:$APP_VERSION" abschlagsradar_app
+      - name: Verify App and neutral image identity
+        env:
+          APP_VERSION: ${{ steps.app.outputs.version }}
+        run: |
+          docker inspect --format '{{index .Config.Labels "org.opencontainers.image.authors"}}' "ghcr.io/orbitnestlab/abschlagsradar:$APP_VERSION" | grep -Fx AbschlagsRadar
+          docker run --rm --entrypoint python "ghcr.io/orbitnestlab/abschlagsradar:$APP_VERSION" -c 'import server; print("App version:", server.VERSION)'
+      - name: Publish versioned image
+        env:
+          REGISTRY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REGISTRY_USER: ${{ github.actor }}
+          APP_VERSION: ${{ steps.app.outputs.version }}
+        run: |
+          printf '%s' "$REGISTRY_TOKEN" | docker login ghcr.io --username "$REGISTRY_USER" --password-stdin
+          docker push "ghcr.io/orbitnestlab/abschlagsradar:$APP_VERSION"
+          docker logout ghcr.io

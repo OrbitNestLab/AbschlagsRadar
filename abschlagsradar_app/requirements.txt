@@ -1,0 +1,2 @@
+# Complete dependency versions from the validated AMD64 App image.
+-r requirements-lock.txt

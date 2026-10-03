@@ -1,0 +1,30 @@
+name: AbschlagsRadar
+version: 0.4.4
+slug: abschlagsradar
+description: Lokale App für Strom, Gas und passende Abschläge – ohne Boni.
+arch:
+- amd64
+startup: application
+boot: auto
+init: true
+ingress: true
+ingress_port: 8099
+ingress_entry: ''
+panel_icon: mdi:radar
+panel_title: AbschlagsRadar
+panel_admin: true
+homeassistant_api: true
+hassio_api: false
+host_network: false
+ports: {}
+map:
+- type: homeassistant_config
+  read_only: false
+  path: /homeassistant
+options: {}
+schema: {}
+backup: cold
+watchdog: http://[HOST]:[PORT:8099]/health
+stage: experimental
+image: ghcr.io/orbitnestlab/abschlagsradar
+url: https://github.com/OrbitNestLab/AbschlagsRadar

@@ -1,0 +1,30 @@
+name: Validate App
+on: [push, pull_request, workflow_dispatch, workflow_call]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: python -m pip install --upgrade pip==26.2.1
+      - run: python -m pip install -r requirements-dev.txt
+      - run: python tools/sync_sources.py --check
+      - run: ruff check .
+      - run: ruff format --check .
+      - run: python -m pytest tests -q
+      - run: node --test tests/frontend.test.cjs
+      - run: npm install --global pnpm@11.19.0
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm test:browser
+      - run: bash -n Installieren.command
+      - run: python tools/validate_release.py --public
+      - run: docker build --pull -t abschlagsradar:validation abschlagsradar_app
+      - run: docker run --rm --entrypoint sh abschlagsradar:validation -c 'python -m pip install pip-audit==2.10.1 >/dev/null && python -m pip_audit'

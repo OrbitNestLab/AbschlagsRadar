@@ -1,0 +1,10 @@
+get_daily_history:
+  name: Daily billing history
+  description: Return daily actual, previous-year and forecast kWh for one billing period. Does not modify Recorder history.
+  fields:
+    entry_id:
+      name: Contract
+      required: true
+      selector:
+        config_entry:
+          integration: abschlagsradar

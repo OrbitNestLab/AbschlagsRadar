@@ -1,0 +1,240 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Was möchtest du einrichten?",
+        "menu_options": {
+          "electricity": "Strom",
+          "gas": "Gas"
+        }
+      },
+      "electricity": {
+        "title": "Stromvertrag einrichten",
+        "description": "Strom- oder Gasvertrag anlegen. Optional einen kumulativen Verbrauchszähler auswählen; ohne Sensor manuell oder per Foto erfassen. Preise brutto in Euro.",
+        "data": {
+          "name": "Vertragsname",
+          "energy_type": "Energieart",
+          "source_sensor": "Kumulativer Verbrauchszähler",
+          "source_unit": "Zählereinheit",
+          "price": "Arbeitspreis (EUR/kWh)",
+          "base": "Grundpreis (EUR)",
+          "base_period": "Grundpreiszeitraum",
+          "payment": "Monatlicher Abschlag (EUR)",
+          "payment_day": "Zahlungstag (1–28)",
+          "billing_start": "Abrechnungsbeginn",
+          "gas_mode": "Gasnutzung",
+          "gas_factor": "Gasumrechnung (kWh/m³)",
+          "annual_estimate": "Ersatzwert Jahresverbrauch (kWh)"
+        }
+      },
+      "gas": {
+        "title": "Gasvertrag einrichten",
+        "description": "Strom- oder Gasvertrag anlegen. Optional einen kumulativen Verbrauchszähler auswählen; ohne Sensor manuell oder per Foto erfassen. Preise brutto in Euro.",
+        "data": {
+          "name": "Vertragsname",
+          "energy_type": "Energieart",
+          "source_sensor": "Kumulativer Verbrauchszähler",
+          "source_unit": "Zählereinheit",
+          "price": "Arbeitspreis (EUR/kWh)",
+          "base": "Grundpreis (EUR)",
+          "base_period": "Grundpreiszeitraum",
+          "payment": "Monatlicher Abschlag (EUR)",
+          "payment_day": "Zahlungstag (1–28)",
+          "billing_start": "Abrechnungsbeginn",
+          "gas_mode": "Gasnutzung",
+          "gas_factor": "Gasumrechnung (kWh/m³)",
+          "annual_estimate": "Ersatzwert Jahresverbrauch (kWh)"
+        }
+      }
+    },
+    "error": {
+      "invalid_date": "Ungültiges Datum.",
+      "invalid_number": "Nur endliche, nichtnegative Zahlen verwenden.",
+      "invalid_settings": "Ungültige Einstellungen.",
+      "invalid_history": "Ungültige JSON-Historie; siehe README.",
+      "duplicate_date": "Datum ist doppelt vorhanden.",
+      "decreasing_meter": "Zählerstände dürfen nicht sinken. Bei Zählerwechsel direkte Intervalle verwenden.",
+      "overlapping_intervals": "Verbrauchsintervalle überschneiden sich.",
+      "source_unit_mismatch": "Einheit des Sensors passt nicht zur Auswahl.",
+      "identity_change": "Für eine andere Energieart oder Zählereinheit einen neuen Vertrag anlegen.",
+      "history_too_long": "Historischer Zeitraum höchstens 100 Jahre."
+    },
+    "abort": {
+      "already_configured": "Dieser Vertrag ist bereits eingerichtet."
+    }
+  },
+  "options": {
+    "step": {
+      "settings": {
+        "title": "Vertrag bearbeiten",
+        "data": {
+          "name": "Vertragsname",
+          "energy_type": "Energieart",
+          "source_sensor": "Kumulativer Verbrauchszähler",
+          "source_unit": "Zählereinheit",
+          "price": "Arbeitspreis (EUR/kWh)",
+          "base": "Grundpreis (EUR)",
+          "base_period": "Grundpreiszeitraum",
+          "payment": "Monatlicher Abschlag (EUR)",
+          "payment_day": "Zahlungstag (1–28)",
+          "billing_start": "Abrechnungsbeginn",
+          "gas_mode": "Gasnutzung",
+          "gas_factor": "Gasumrechnung (kWh/m³)",
+          "annual_estimate": "Ersatzwert Jahresverbrauch (kWh)"
+        }
+      },
+      "history": {
+        "title": "Historie bearbeiten",
+        "description": "Vollständige JSON-Historie ersetzen (readings, intervals, tariffs, payments). Datumsformat ISO oder TT.MM.JJJJ. Beispiele im README. Automatische Messwerte bleiben separat gespeichert.",
+        "data": {
+          "history_json": "Historie (JSON)"
+        }
+      },
+      "init": {
+        "menu_options": {
+          "settings": "Vertrag bearbeiten",
+          "history": "Historische Daten und Tarife",
+          "reading": "Zählerstand eintragen",
+          "clear_samples": "Automatische Messwerte löschen",
+          "installment": "Abschlag ändern"
+        },
+        "description": "Für die normale Bedienung und den Fotoscan öffne AbschlagsRadar in der Seitenleiste."
+      },
+      "reading": {
+        "title": "Zählerstand prüfen und speichern",
+        "description": "Einheit: {unit}. Prüfe Zählernummer, Nachkommastellen und Bezugsregister. Ein Eintrag am gleichen Datum ersetzt den bisherigen manuellen Stand.",
+        "data": {
+          "date": "Ablesedatum",
+          "value": "Zählerstand"
+        }
+      },
+      "clear_samples": {
+        "title": "Automatische Messwerte löschen",
+        "description": "Alle automatisch erfassten Stände dieses Vertrags löschen? Manuelle Historie bleibt erhalten. Hilfreich nach einem Zählerwechsel. Mit Absenden bestätigen."
+      },
+      "installment": {
+        "title": "Abschlag ändern",
+        "description": "Neuer monatlicher Abschlag ab diesem Datum. Frühere Zahlungstermine bleiben mit dem damaligen Betrag berechnet. Bereits gezahlte Beträge können zusätzlich in der Historie eingetragen werden.",
+        "data": {
+          "date": "Gültig ab",
+          "amount": "Monatlicher Abschlag (EUR)"
+        }
+      }
+    },
+    "error": {
+      "invalid_date": "Ungültiges Datum.",
+      "invalid_number": "Nur endliche, nichtnegative Zahlen verwenden.",
+      "invalid_settings": "Ungültige Einstellungen.",
+      "invalid_history": "Ungültige JSON-Historie; siehe README.",
+      "duplicate_date": "Datum ist doppelt vorhanden.",
+      "decreasing_meter": "Zählerstände dürfen nicht sinken. Bei Zählerwechsel direkte Intervalle verwenden.",
+      "overlapping_intervals": "Verbrauchsintervalle überschneiden sich.",
+      "source_unit_mismatch": "Einheit des Sensors passt nicht zur Auswahl.",
+      "identity_change": "Für eine andere Energieart oder Zählereinheit einen neuen Vertrag anlegen.",
+      "future_reading": "Ablesedatum darf nicht in der Zukunft liegen.",
+      "history_too_long": "Historischer Zeitraum höchstens 100 Jahre."
+    }
+  },
+  "selector": {
+    "energy_type": {
+      "options": {
+        "electricity": "Strom",
+        "gas": "Gas"
+      }
+    },
+    "base_period": {
+      "options": {
+        "monthly": "Monatlich",
+        "yearly": "Jährlich"
+      }
+    },
+    "gas_mode": {
+      "options": {
+        "heating": "Nur Heizung",
+        "heating_hot_water": "Heizung und Warmwasser",
+        "uniform": "Sonstiger gleichmäßiger Verbrauch"
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "consumption": {
+        "name": "Verbrauch bisher"
+      },
+      "cost_so_far": {
+        "name": "Kosten bisher"
+      },
+      "paid": {
+        "name": "Gezahlte Abschläge"
+      },
+      "forecast_consumption": {
+        "name": "Prognose Jahresverbrauch"
+      },
+      "forecast_cost": {
+        "name": "Prognose Jahreskosten"
+      },
+      "balance": {
+        "name": "Erwarteter Saldo"
+      },
+      "expected_payment": {
+        "name": "Erwartete Nachzahlung"
+      },
+      "expected_credit": {
+        "name": "Erwartetes Guthaben"
+      },
+      "budget_status": {
+        "name": "Budgetstatus",
+        "state": {
+          "payment_due": "Nachzahlung",
+          "credit": "Guthaben",
+          "balanced": "Ausgeglichen"
+        }
+      },
+      "coverage": {
+        "name": "Datenabdeckung"
+      },
+      "previous_consumption": {
+        "name": "Vorjahresverbrauch"
+      },
+      "comparison": {
+        "name": "Änderung zum Vorjahr"
+      },
+      "daily_consumption": {
+        "name": "Tagesverbrauch"
+      },
+      "daily_previous": {
+        "name": "Tagesverbrauch Vorjahr"
+      },
+      "daily_forecast": {
+        "name": "Tagesprognose"
+      },
+      "history_weight": {
+        "name": "Gewicht persönliche Historie"
+      },
+      "current_installment": {
+        "name": "Aktueller Abschlag"
+      },
+      "recommended_installment": {
+        "name": "Empfohlener Abschlag"
+      },
+      "installment_adjustment": {
+        "name": "Empfohlene Abschlagsänderung"
+      },
+      "remaining_installments": {
+        "name": "Verbleibende Abschläge"
+      },
+      "planned_installments": {
+        "name": "Abschläge im Abrechnungsjahr"
+      },
+      "pending_installments": {
+        "name": "Vorgemerkte Abschläge"
+      },
+      "average_paid_installment": {
+        "name": "Durchschnitt bezahlter Abschlag dieses Jahr"
+      },
+      "next_year_installment": {
+        "name": "Empfohlener Abschlag nächstes Jahr"
+      }
+    }
+  }
+}
