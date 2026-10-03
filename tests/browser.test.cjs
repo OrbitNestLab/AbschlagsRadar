@@ -212,7 +212,7 @@ for (const viewport of [
     const site = await fixture();
     const engine = await browser();
     try {
-      const page = await engine.newPage({ viewport });
+      const page = await engine.newPage({ viewport, locale: "de-DE" });
       const errors = [];
       page.on("pageerror", (error) => errors.push(error.message));
       await page.addInitScript(() => {
@@ -314,7 +314,7 @@ test("Failed stylesheet never exposes unstyled contracts on refresh", async () =
   site.releaseCss();
   const engine = await browser();
   try {
-    const page = await engine.newPage();
+    const page = await engine.newPage({ locale: "de-DE" });
     await page.goto(site.url);
     await page.getByRole("alert").waitFor();
     await page.evaluate(() =>
@@ -337,6 +337,7 @@ test("Empty App restores both contracts without creating blank targets first", a
   try {
     const page = await engine.newPage({
       viewport: { width: 390, height: 844 },
+      locale: "de-DE",
     });
     await page.goto(site.url);
     await page
@@ -387,6 +388,7 @@ test("Entity tab uses registered IDs, explicit unknown states and HTTP-compatibl
   try {
     const page = await engine.newPage({
       viewport: { width: 390, height: 844 },
+      locale: "de-DE",
     });
     await page.addInitScript(() => {
       Object.defineProperty(navigator, "clipboard", { value: undefined });
