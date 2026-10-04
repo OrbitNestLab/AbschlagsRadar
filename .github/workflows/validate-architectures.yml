@@ -1,0 +1,54 @@
+name: Validate App architectures
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  native-container:
+    name: ${{ matrix.ha_arch }} native container
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - ha_arch: amd64
+            docker_arch: amd64
+            runner: ubuntu-24.04
+          - ha_arch: aarch64
+            docker_arch: arm64
+            runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Build native App container
+        run: >-
+          docker build --pull
+          --build-arg BUILD_ARCH=${{ matrix.ha_arch }}
+          --tag abschlagsradar-architecture:${{ matrix.ha_arch }}
+          abschlagsradar_app
+      - name: Verify architecture, App import and local OCR
+        run: |
+          test "$(docker inspect --format '{{.Architecture}}' abschlagsradar-architecture:${{ matrix.ha_arch }})" = "${{ matrix.docker_arch }}"
+          docker run --rm -i --entrypoint python abschlagsradar-architecture:${{ matrix.ha_arch }} - <<'PYTHON'
+          from io import BytesIO
+          import platform
+          import server
+          from PIL import Image, ImageDraw, ImageFont
+          from radarcore.ocr_core import scan_bytes
+
+          image = Image.new("RGB", (900, 200), "white")
+          try:
+              font = ImageFont.truetype("DejaVuSans.ttf", 90)
+          except OSError:
+              font = ImageFont.load_default(size=90)
+          ImageDraw.Draw(image).text((30, 30), "123456", fill="black", font=font)
+          payload = BytesIO()
+          image.save(payload, format="PNG")
+          assert server.VERSION == "0.4.5"
+          assert any(row["value"] == 123456 for row in scan_bytes(payload.getvalue(), (0, 0, 100, 100)))
+          print("Native App and OCR passed on", platform.machine())
+          PYTHON
