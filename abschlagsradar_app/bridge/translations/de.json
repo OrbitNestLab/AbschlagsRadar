@@ -10,7 +10,7 @@
       },
       "electricity": {
         "title": "Stromvertrag einrichten",
-        "description": "Strom- oder Gasvertrag anlegen. Optional einen kumulativen Verbrauchszähler auswählen; ohne Sensor manuell oder per Foto erfassen. Preise brutto in Euro.",
+        "description": "Strom- oder Gasvertrag anlegen. Optional einen kumulativen Verbrauchszähler auswählen; ohne Sensor manuell oder per Fotoscan (Beta) erfassen. Preise brutto in Euro.",
         "data": {
           "name": "Vertragsname",
           "energy_type": "Energieart",
@@ -29,7 +29,7 @@
       },
       "gas": {
         "title": "Gasvertrag einrichten",
-        "description": "Strom- oder Gasvertrag anlegen. Optional einen kumulativen Verbrauchszähler auswählen; ohne Sensor manuell oder per Foto erfassen. Preise brutto in Euro.",
+        "description": "Strom- oder Gasvertrag anlegen. Optional einen kumulativen Verbrauchszähler auswählen; ohne Sensor manuell oder per Fotoscan (Beta) erfassen. Preise brutto in Euro.",
         "data": {
           "name": "Vertragsname",
           "energy_type": "Energieart",
@@ -98,7 +98,7 @@
           "clear_samples": "Automatische Messwerte löschen",
           "installment": "Abschlag ändern"
         },
-        "description": "Für die normale Bedienung und den Fotoscan öffne AbschlagsRadar in der Seitenleiste."
+        "description": "Für die normale Bedienung und den Fotoscan (Beta) öffne AbschlagsRadar in der Seitenleiste."
       },
       "reading": {
         "title": "Zählerstand prüfen und speichern",

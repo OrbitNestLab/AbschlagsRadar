@@ -97,7 +97,7 @@ def ensure_bridge(source, config_root, data_root):
             if old.exists():
                 old.replace(target)
             raise
-        # Record this before cleanup so a cleanup error cannot skip the restart.
+        # Record this before cleanup so a cleanup error cannot lose the manual-restart notice.
         mark_restart(data_root)
         if old.exists():
             shutil.rmtree(old)

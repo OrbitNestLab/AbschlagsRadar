@@ -22,6 +22,13 @@ def test_manifest_and_packaging():
         ast.parse((BASE / f"{name}.py").read_text())
 
 
+def test_installation_never_restarts_home_assistant_automatically():
+    server = (ROOT / "abschlagsradar_app" / "server.py").read_text()
+    installer = (ROOT / "Installieren.command").read_text()
+    assert "services/homeassistant/restart" not in server
+    assert '"service":"restart"' not in installer.replace(" ", "")
+
+
 def test_translations_cover_all_sensor_and_flow_keys():
     en = json.loads((BASE / "translations/en.json").read_text())
     de = json.loads((BASE / "translations/de.json").read_text())

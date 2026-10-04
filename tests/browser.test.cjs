@@ -501,8 +501,10 @@ test("App follows Home Assistant English even with a German browser, preserving 
     await app
       .getByRole("button", { name: "Meter readings", exact: true })
       .click();
-    await app.getByRole("button", { name: "Read photo", exact: true }).click();
-    await app.getByText("Read meter photo", { exact: true }).waitFor();
+    await app
+      .getByRole("button", { name: "Read photo · Beta", exact: true })
+      .click();
+    await app.getByText("Read meter photo · Beta", { exact: true }).waitFor();
     await app.getByRole("button", { name: "Cancel", exact: true }).click();
     await app.getByRole("button", { name: "HA entities", exact: true }).click();
     await app.getByText("Use your values elsewhere", { exact: true }).waitFor();

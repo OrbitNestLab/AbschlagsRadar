@@ -30,3 +30,5 @@ anbieten, wenn Image und Betrieb geprüft wurden.
 
 Keine persönlichen Daten, lokale Pfade, Testzugänge oder private Entwicklungshistorie
 veröffentlichen. Sicherheitsmeldungen erfolgen vertraulich über GitHub Advisories.
+
+Ab 0.4.6 erfolgt kein automatischer Home-Assistant-Neustart. In Installations- und Updatehinweisen den nötigen manuellen Neustart nennen. Den lokalen Fotoscan in Beschreibungen immer als Beta mit Kontrolle vor dem Speichern ausweisen.

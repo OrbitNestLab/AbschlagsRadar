@@ -48,7 +48,7 @@ jobs:
           ImageDraw.Draw(image).text((30, 30), "123456", fill="black", font=font)
           payload = BytesIO()
           image.save(payload, format="PNG")
-          assert server.VERSION == "0.4.5"
+          assert server.VERSION == "0.4.6"
           assert any(row["value"] == 123456 for row in scan_bytes(payload.getvalue(), (0, 0, 100, 100)))
           print("Native App and OCR passed on", platform.machine())
           PYTHON

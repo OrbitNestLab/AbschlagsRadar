@@ -1,6 +1,21 @@
-# Validierung · v0.4.4
+# Validierung · v0.4.6
 
-Stand: 03.10.2026. Keine öffentliche Veröffentlichung erfolgt.
+Stand: 04.10.2026. Die öffentliche Version bleibt experimentell.
+
+## Installation und Fotoscan v0.4.6
+
+- Die App ruft keinen Home-Assistant-Neustartdienst mehr auf. Nach der ersten
+  Installation sowie nach Änderungen an der gebündelten Sensoranbindung startet der
+  Nutzer Home Assistant bewusst selbst neu. Eine statische Paketprüfung verhindert
+  die versehentliche Wiedereinführung des automatischen Neustarts.
+- Fotoscan ist in deutscher und englischer Oberfläche, App-Dokumentation und
+  Einrichtungsbeschreibung als Beta gekennzeichnet. Jeder erkannte Wert muss vor dem
+  Speichern kontrolliert werden.
+- 83 Python-Tests (einschließlich OCR-Inferenz), sieben Browserprüfungen, Frontend-/Sprachprüfungen sowie Paket- und Formatprüfungen bestanden.
+- Dauerhafte getrennte HA-Container-Testumgebung: App-Update auf 0.4.6 änderte den Startzeitpunkt von Home Assistant nicht. Nach einem bewusst manuellen Neustart blieben beide Verträge und alle 48 Entitäten erhalten. Messwerte ohne vollständige aktuelle Ablesung bleiben ausdrücklich unbekannt.
+- App-Container und echte lokale OCR-Inferenz des vorherigen Stands 0.4.5 wurden in GitHub Actions nativ auf
+  AMD64 und AArch64 geprüft. Das veröffentlichte Installationsangebot bleibt bis zu
+  einem vollständigen Home-Assistant-OS-/Supervisor-Test auf AMD64 begrenzt.
 
 ## Wiederherstellung und Entitäten v0.4.4
 
@@ -71,13 +86,13 @@ ist zusätzlich gegen die echte Ingress-App geprüft.
 Geprüft mit Home Assistant 2026.9.4 / Python 3.14.6 auf AMD64.
 App-Python 3.12.15; tatsächlicher Web-/OCR-Prozess läuft mit UID 65534.
 
-- Privates Supervisor-Update, Installation der internen Sensoranbindung und anschließender HA-Neustart.
+- Privates Supervisor-Update, Installation der internen Sensoranbindung und anschließender HA-Neustart (historischer Ablauf vor 0.4.6).
 - HA-Konfigurationsprüfung, authentifizierte Ingress-Oberfläche und Seitenleisteneintrag.
 - Temporäre Strom-/Gas-Verträge über die wirkliche App angelegt; deutsche/ISO-Daten, Intervalle, Tarife, Abschlagsänderungen, Zahlungen, Vormerkung, Bestätigung und JSON-Wiederherstellung geprüft.
 - Temporäre Verträge anschließend entfernt; ursprüngliche Vertragsdaten und Ablesungen erhalten.
 - 24 native Sensoren je Energieart, insgesamt 48; keine nicht verfügbaren Entitäten.
-- Desktop und 390-px-Mobilansicht im isolierten Browser, getrenntes Gasformular, rotes Minus/grünes Plus, Restperioden-Empfehlung und lokaler Fotoscan geprüft.
-- Fotoscan mit synthetischen Ziffern einschließlich bestätigter Speicherung und einmaliger Vorschlagsnutzung im temporären Testvertrag geprüft. Kein Testwert wurde in produktive Verträge geschrieben.
+- Desktop und 390-px-Mobilansicht im isolierten Browser, getrenntes Gasformular, rotes Minus/grünes Plus, Restperioden-Empfehlung und lokaler Fotoscan (Beta) geprüft.
+- Fotoscan (Beta) mit synthetischen Ziffern einschließlich bestätigter Speicherung und einmaliger Vorschlagsnutzung im temporären Testvertrag geprüft. Kein Testwert wurde in produktive Verträge geschrieben.
 - Der überflüssige frühere OCR-Hilfscontainer wurde entfernt.
 
 ## Leere Installation und Wiederherstellung
@@ -88,7 +103,7 @@ Die App verwendet denselben gebauten Quellstand; ein Testproxy ersetzt ausschlie
 die Supervisor-Kommunikation. Produktive Konfiguration und Zugangsdaten werden
 nicht in diese Testumgebung übernommen.
 
-- Automatische Installation der Sensoranbindung und genau ein Neustart der leeren HA-Instanz.
+- Automatische Installation der Sensoranbindung und genau ein Neustart der leeren HA-Instanz (historischer Ablauf vor 0.4.6).
 - Leere Startseite, Anlage von Strom/Gas mit optional leerem Sensor und 48 nativen Entitäten.
 - Automatische Sensorablesung, Erkennung eines zurückspringenden Zählers und anschließende Erholung.
 - JSON-Export mit automatischen Ablesungen, Vorschau und Wiederherstellung.
@@ -109,14 +124,12 @@ diesen Modelltest; sie sind keine pauschale Zusage für die App-Geschwindigkeit.
 keine Treffer nach dem Paketupdate. Versionspins und Prüfung sind vorbereitet.
 Dies ersetzt keine Prüfung des gesamten Betriebssystems oder unbekannter Schwachstellen.
 
-## Grenzen vor der ersten öffentlichen Freigabe
+## Verbleibende Testgrenzen
 
-- Reale Repository-Adresse, Maintainer und privater Sicherheitskontakt ergänzen; danach öffentlicher Metadatencheck, App-Lint/Builder und Hassfest.
 - Vollständigen App-Store-Erstinstallationsweg und echte Supervisor-Backup-Wiederherstellung separat prüfen.
 - Reale mechanische/digitale Zählerfotos mit Reflexionen und roten Nachkommastellen prüfen. Bestätigung vor Speicherung bleibt erforderlich.
-- Weitere HA-Versionen, Mobilgeräte und Hardware: bislang nur AMD64-App validiert.
+- Weitere HA-Versionen und Mobilgeräte benötigen zusätzliche Prüfung. Container und OCR sind nativ auf AMD64/AArch64 validiert; der vollständige HA-OS-App-Weg bislang nur für AMD64 vorgesehen.
 - Langfristige Recorder-Verläufe/Diagrammkarten benötigen Beobachtung im normalen Betrieb.
 - Gasfaktor muss aus der tatsächlichen Rechnung stammen; persönliche Saisonverteilung ist noch nicht wetterbereinigt.
 
-Die öffentliche CI ist vorbereitet, wurde aber ohne ein veröffentlichtes GitHub-Repository
-nicht auf GitHub ausgeführt. Das Release-Paket enthält weder private Testdaten noch Zugangsdaten.
+Die öffentliche CI wurde für 0.4.5 auf GitHub erfolgreich ausgeführt. Die oben beschriebenen aktuellen lokalen Prüfungen betreffen 0.4.6. Das Release-Paket enthält weder private Testdaten noch Zugangsdaten.

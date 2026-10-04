@@ -349,7 +349,7 @@ def test_bridge_restores_previous_directory_if_atomic_publish_fails(tmp_path, mo
     assert not list(target.parent.glob(".abschlagsradar-stage-*"))
 
 
-def test_bridge_crash_after_publish_still_requests_restart(tmp_path):
+def test_bridge_crash_after_publish_still_requires_manual_restart(tmp_path):
     import shutil
 
     from bridge_installer import ensure_bridge

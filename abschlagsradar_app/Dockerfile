@@ -1,5 +1,5 @@
 FROM python:3.12.15-slim-bookworm
-ARG BUILD_VERSION=0.4.5
+ARG BUILD_VERSION=0.4.6
 ARG BUILD_ARCH=amd64
 LABEL io.hass.version "${BUILD_VERSION}"
 LABEL io.hass.type "app"

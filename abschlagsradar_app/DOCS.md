@@ -9,8 +9,14 @@ Verträge werden automatisch angezeigt, ohne Import oder doppelte Datenpflege. N
 lassen sich in der App als Strom oder Gas anlegen. Tarife, Zählerstände, Zahlungen und
 Abschlagsänderungen werden validiert in den Integrationseinträgen gespeichert.
 
-Der Fotoscan läuft direkt im App-Container. Fotos werden nur im Arbeitsspeicher verarbeitet
-und nach dem Scan verworfen. Erst nach Bestätigung wird der Zählerstand gespeichert.
+Der Fotoscan ist eine **Beta-Funktion** und läuft direkt im App-Container. Fotos werden nur
+im Arbeitsspeicher verarbeitet und nach dem Scan verworfen. Die Erkennung kann falsche
+Ziffern liefern. Erst nach Kontrolle und Bestätigung wird der Zählerstand gespeichert.
+
+Beim ersten Start installiert die App ihre interne Sensoranbindung. Danach Home Assistant
+manuell neu starten. Die App löst weder nach der Installation noch nach einem Update selbst
+einen Neustart aus. Wird die interne Sensoranbindung aktualisiert, ist erneut ein manueller
+Neustart nötig.
 
 Unter **Daten sichern** können Einstellungen, manuelle Historie und automatische
 Ablesungen als JSON heruntergeladen werden. **Sicherung wiederherstellen** prüft die

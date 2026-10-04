@@ -33,4 +33,4 @@ geladen; Bilder und Verträge werden dabei nicht hochgeladen.
 ## Sicherheitsproblem melden
 
 Bitte Sicherheitslücken vertraulich über [Report a vulnerability](https://github.com/OrbitNestLab/AbschlagsRadar/security/advisories/new) melden. Normale Fehler gehören in die [Issues](https://github.com/OrbitNestLab/AbschlagsRadar/issues).
-Keine Tokens, Passwörter, Fotos oder privaten Backups hochladen. Version 0.4.5 ist die erste experimentelle öffentliche Version; Korrekturen werden über neue App-Versionen bereitgestellt.
+Keine Tokens, Passwörter, Fotos oder privaten Backups hochladen. Version 0.4.5 ist die erste experimentelle öffentliche Version; Korrekturen werden über neue App-Versionen bereitgestellt. Der Fotoscan ist eine Beta-Funktion: erkannte Zählerstände vor dem Speichern immer selbst kontrollieren.

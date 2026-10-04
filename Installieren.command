@@ -11,7 +11,7 @@ radar_user="${radar_user:-hassio}"
 if [[ ! "$radar_host" =~ ^[a-zA-Z0-9.-]+$ || ! "$radar_user" =~ ^[a-zA-Z0-9_-]+$ ]]; then
   printf 'Ungültige Adresse oder Benutzername.\n'; exit 1
 fi
-printf '\nDie Installation sichert die bisherige Integration, richtet die App ein und startet Home Assistant neu.\nFortfahren? [j/N]: '
+printf '\nDie Installation sichert die bisherige Integration und richtet die App ein. Home Assistant wird nicht automatisch neu gestartet.\nFortfahren? [j/N]: '
 read -r radar_answer
 [[ "$radar_answer" == j || "$radar_answer" == J ]] || exit 0
 tar -czf - abschlagsradar_app | ssh "${radar_user}@${radar_host}" '
@@ -59,5 +59,5 @@ if api("addons/local_abschlagsradar/info")["data"]["state"]!="started":
 PYAPP
 '
 open "http://${radar_host}:8123/local_abschlagsradar"
-printf '\nInstalliert. AbschlagsRadar über die Seitenleiste öffnen.\nStrom und Gas öffnen jeweils ein eigenes Einrichtungsformular.\nDer Fotoscan läuft direkt in der App.\n'
+printf '\nInstalliert. Bitte Home Assistant jetzt einmal selbst neu starten und danach AbschlagsRadar über die Seitenleiste öffnen.\nStrom und Gas öffnen jeweils ein eigenes Einrichtungsformular.\nDer Fotoscan ist eine Beta-Funktion und läuft direkt in der App; erkannte Werte immer prüfen.\n'
 read -r -p 'Enter zum Schließen …' radar_done

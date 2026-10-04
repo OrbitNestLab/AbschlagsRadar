@@ -1,4 +1,4 @@
-# AbschlagsRadar App · v0.4.5
+# AbschlagsRadar App · v0.4.6
 
 ![AbschlagsRadar](abschlagsradar_app/icon.png)
 
@@ -9,9 +9,9 @@ Die Startseite zeigt eine Nachzahlung rot mit Minus und ein Guthaben grün mit P
 Boni werden grundsätzlich ausgeschlossen. Die App ändert keine Zahlung beim Anbieter.
 
 Für Nutzer gibt es **eine App-Installation**. Die App bringt ihre interne
-Home-Assistant-Sensoranbindung und den lokalen Fotoscan mit. Sie öffnet sich in der
+Home-Assistant-Sensoranbindung und den lokalen Fotoscan als Beta-Funktion mit. Sie öffnet sich in der
 Seitenleiste; ein zusätzliches Dashboard, HACS oder ein separates Passwort entfällt.
-Experimentelle Version für AMD64. Die Hinweise zu Prognosen, Fotoscan und Sicherungen unten beachten.
+Experimentelle Version für AMD64. Die Hinweise zu Prognosen, Fotoscan (Beta) und Sicherungen unten beachten.
 
 Die App übernimmt die Sprache des angemeldeten Home-Assistant-Nutzers. Deutsch und
 Englisch sind enthalten; bei weiteren Sprachen verwendet die App englische Texte.
@@ -46,9 +46,11 @@ ohne Supervisor kann diese App nicht installieren.
 
 Über den Button die App-Quelle hinzufügen. Alternativ `https://github.com/OrbitNestLab/AbschlagsRadar`
 unter **Einstellungen → Apps → App-Store → Repositories** ergänzen, dann
-**AbschlagsRadar → Installieren → Starten → In Seitenleiste anzeigen**. Der erste Start installiert die gebündelte Sensoranbindung
-und fordert einen HA-Neustart an. Anschließend Strom und Gas getrennt einrichten.
-Auch ein Update der internen Anbindung kann einen HA-Neustart auslösen.
+**AbschlagsRadar → Installieren → Starten → In Seitenleiste anzeigen**. Der erste Start
+installiert die gebündelte Sensoranbindung. **Starte Home Assistant danach einmal manuell
+neu**, bevor du Strom und Gas einrichtest. Die App startet Home Assistant weder nach einer
+Installation noch nach einem Update automatisch neu. Wenn ein Update die interne
+Sensoranbindung ändert, ist erneut ein manueller Neustart nötig.
 
 Optional für bestehende SSH-/Docker-Installationen auf macOS: `Installieren.command` doppelklicken, HA-Adresse und SSH-Benutzer
 eingeben und dem geführten Ablauf folgen. Der Starter benötigt die geprüfte
@@ -60,7 +62,7 @@ Für die Installation wird das vorgebaute Image aus der öffentlichen Registry h
 Fotos oder Vertragsdaten an einen Clouddienst übertragen. Im Repository und
 Installationspaket sind keine persönlichen Daten, Passwörter oder Tokens enthalten.
 
-**Testgrenze:** Die dauerhafte Testumgebung läuft mit HA Container. Der vollständige App-Store-Erstinstallationsweg, Supervisor-Updates und eine vollständige HA-OS-Sicherungswiederherstellung sind noch nicht separat nachgewiesen. Fotoscan wurde mit synthetischen Anzeigen geprüft; reale Zählerfotos können Korrekturen benötigen.
+**Testgrenze:** Die dauerhafte Testumgebung läuft mit HA Container. Der vollständige App-Store-Erstinstallationsweg, Supervisor-Updates und eine vollständige HA-OS-Sicherungswiederherstellung sind noch nicht separat nachgewiesen. Der Fotoscan ist eine Beta-Funktion und wurde mit synthetischen Anzeigen geprüft; reale Zählerfotos können falsche Werte liefern und müssen immer kontrolliert werden.
 
 Die Gestaltung bleibt beim Wechsel zwischen Reitern geladen; auch beim ersten
 Öffnen werden Vertragsinhalte erst mit dem fertigen Layout angezeigt.
@@ -77,11 +79,11 @@ vom Abrechnungsbeginn und liegt zwischen 1 und 28. Nach der Jahresabrechnung den
 Beginn ausdrücklich auf die neue Periode setzen; die App wechselt ihn nicht still.
 
 - **Überblick:** Abrechnungsprognose, Verbrauch, Kosten, Abschlag und Vergleich.
-- **Zählerstände:** manuelle Ablesungen, Fotoscan, automatische Ablesungen und direkte kWh-Intervalle.
+- **Zählerstände:** manuelle Ablesungen, Fotoscan (Beta), automatische Ablesungen und direkte kWh-Intervalle.
 - **Abschläge:** Änderungen mit Gültigkeitsdatum, tatsächliche Zahlungen und Empfehlungen.
 - **Tarif:** datierte Preisänderungen, Gasnutzung, Faktor, Zählersensor und Vertragsdaten.
 
-Änderungen, Fotoscan, Export und Wiederherstellung sind HA-Administratoren vorbehalten.
+Änderungen, Fotoscan (Beta), Export und Wiederherstellung sind HA-Administratoren vorbehalten.
 Alle Eingaben werden vor dem Speichern geprüft. Eine Ablesung am gleichen Datum
 ersetzt den manuellen Stand. Eine Tarif- oder Abschlagsänderung am gleichen
 Gültigkeitsdatum ersetzt die vorherige Änderung; separate Zahlungen dürfen sich addieren.
@@ -99,14 +101,15 @@ verwendet 80 % Heizkurve und 20 % gleichmäßige Grundlast. Persönliche Histori
 die Monatsverteilung anschließend bis zu 75 % bestimmen. Wetterbereinigung oder
 Heizgradtage sind bisher nicht enthalten.
 
-### Fotoscan
+### Fotoscan (Beta)
 
-**Zählerstände → Foto auslesen → Datum und JPEG/PNG auswählen.** Bei Bedarf den
+**Zählerstände → Foto auslesen · Beta → Datum und JPEG/PNG auswählen.** Bei Bedarf den
 Bildausschnitt in Prozent eingrenzen. Maximal 12 MB und 20 Megapixel; HEIC vorher
 umwandeln. RapidOCR und seine Modelle laufen im App-Container. ONNX-Telemetrie wird
 deaktiviert. Bilddaten bleiben im Arbeitsspeicher und werden nach Verarbeitung verworfen.
 
-Der erkannte Stand wird **erst nach deiner Bestätigung** gespeichert. Prüfe
+Diese Beta-Funktion kann falsche Ziffern erkennen. Der erkannte Stand wird **erst nach
+deiner Bestätigung** gespeichert. Prüfe
 Zählernummer, Nachkommastellen und Bezugsregister (bei Strom meist 1.8.0). Ein hoher
 Erkennungswert beweist nicht, dass die richtige Zahl ausgewählt wurde. Reflexionen,
 rote Stellen und mechanische Rollenzähler können Korrekturen erfordern. Ein fehlender
@@ -292,8 +295,9 @@ Abhängigkeiten sind vollständig versioniert. Name/Markenverfügbarkeit ist noc
 ## English quick start
 
 Install the **AbschlagsRadar App** through a Home Assistant App repository on AMD64
-HA OS and open it from the sidebar. The App installs its bundled sensor bridge and
-local photo OCR automatically. Electricity and gas have separate setup forms and
+HA OS and open it from the sidebar. The App installs its bundled sensor bridge; restart
+Home Assistant manually afterwards. The App never restarts Home Assistant automatically.
+Local photo OCR is a beta feature, and every detected reading must be checked. Electricity and gas have separate setup forms and
 24 native sensors per contract. Review every scanned reading. Backups include
 automatic samples and can be restored to an existing contract of the same energy
 type. No bonuses or automatic supplier payment changes are included.

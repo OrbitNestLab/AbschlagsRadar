@@ -1,3 +1,9 @@
+# 0.4.6
+
+- Home Assistant wird nach Installation oder Update nicht mehr automatisch neu gestartet; der nötige Neustart liegt bewusst beim Nutzer.
+- Fotoscan in Oberfläche und Dokumentation als Beta gekennzeichnet und die Pflicht zur Kontrolle des erkannten Werts deutlicher gemacht.
+- Native Container- und OCR-Prüfungen auf AMD64 und AArch64 ergänzt; das angebotene Release bleibt bis zum vollständigen HA-OS-Test auf AMD64 begrenzt.
+
 # 0.4.5
 
 - App übernimmt die Home-Assistant-Sprache; Deutsch und Englisch, Englisch als Rückfall für weitere Sprachen.

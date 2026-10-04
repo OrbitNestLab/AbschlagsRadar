@@ -14,7 +14,7 @@ from pathlib import Path
 from aiohttp import ClientSession, ClientTimeout, ClientWSTimeout, web
 from store import SnapshotStore
 
-VERSION = "0.4.5"
+VERSION = "0.4.6"
 WEB = Path(__file__).parent / "web"
 TRUSTED_INGRESS = {"172.30.32.2"}
 ERROR_MESSAGES = {
@@ -414,12 +414,11 @@ async def main():
         ha = HAClient(session, os.environ["SUPERVISOR_TOKEN"])
         marker = data / "bridge-restart-needed"
         if marker.exists():
-            try:
-                await ha.rest("services/homeassistant/restart", {})
-                marker.unlink()
-                print("Bundled HA connection installed; Home Assistant restart requested.", flush=True)
-            except Exception:  # noqa: BLE001 - keep restart marker for the next startup
-                print("HA connection prepared. A Home Assistant restart is still required.", flush=True)
+            marker.unlink()
+            print(
+                "Bundled HA connection installed. Restart Home Assistant manually before using it.",
+                flush=True,
+            )
         app = create_app(ha, store)
         runner = web.AppRunner(app, access_log=None)
         await runner.setup()

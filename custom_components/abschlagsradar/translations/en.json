@@ -10,7 +10,7 @@
       },
       "electricity": {
         "title": "Set up electricity",
-        "description": "Add an electricity or gas contract. Optionally select a cumulative meter; otherwise enter readings manually or by photo. Prices include taxes, in euros.",
+        "description": "Add an electricity or gas contract. Optionally select a cumulative meter; otherwise enter readings manually or with the beta photo scan. Prices include taxes, in euros.",
         "data": {
           "name": "Contract name",
           "energy_type": "Energy type",
@@ -29,7 +29,7 @@
       },
       "gas": {
         "title": "Set up gas",
-        "description": "Add an electricity or gas contract. Optionally select a cumulative meter; otherwise enter readings manually or by photo. Prices include taxes, in euros.",
+        "description": "Add an electricity or gas contract. Optionally select a cumulative meter; otherwise enter readings manually or with the beta photo scan. Prices include taxes, in euros.",
         "data": {
           "name": "Contract name",
           "energy_type": "Energy type",
@@ -98,7 +98,7 @@
           "clear_samples": "Clear automatic samples",
           "installment": "Change installment"
         },
-        "description": "For normal use and photo capture, open AbschlagsRadar in the sidebar."
+        "description": "For normal use and the beta photo scan, open AbschlagsRadar in the sidebar."
       },
       "reading": {
         "title": "Review and save meter reading",

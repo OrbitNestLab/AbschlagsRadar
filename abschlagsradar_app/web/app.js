@@ -163,7 +163,7 @@ class RadarApp extends HTMLElement {
         "",
       )}</nav>${this.section === "overview" ? msg`${this.metric(t("Voraussichtliche Abrechnung"), num(Math.abs(v.balance), "€"), v.balance > 1 ? t("Nachzahlung") : v.balance < -1 ? t("Guthaben") : t("Ausgeglichen"), "hero")}<div class="metrics">${this.metric(t("Prognose Jahreskosten"), num(v.forecast_cost, "€"))}${this.metric(t("Prognose Verbrauch"), num(v.forecast_consumption, "kWh"))}${this.metric(t("Bereits bezahlt"), num(v.paid, "€"), c.result.payments_assumed ? t("Laut Zahlungsplan angenommen") : t("Bestätigte Zahlungen"))}</div><article class="recommend"><div><span class="eyebrow">DEIN ABSCHLAG</span><h2>${num(v.current_installment, "€")} <small>aktuell im Monat</small></h2><p>Für die verbleibenden ${v.remaining_installments} anpassbaren Termine: <b>${num(v.recommended_installment, "€")}</b> pro Monat empfohlen.</p></div><button class="primary" data-form="installment">Abschlag ändern</button></article><div class="metrics">${this.metric(t("Durchschnitt bezahlt dieses Jahr"), num(v.average_paid_installment, "€"), t("Bestätigte Zahlungen im Kalenderjahr"))}${this.metric(t("Empfehlung nächstes Jahr"), num(v.next_year_installment, "€"), t("Monatlich · bekannte Preise, ohne Boni"))}</div><article class="box"><h2>Dein Verbrauch im Vergleich</h2>${this.graph(c)}</article><div class="notice">${v.coverage < 100 ? msg`Für ${Math.round(v.coverage)} % des bisherigen Abrechnungszeitraums liegen Messintervalle vor. Ergänze einen aktuellen Zählerstand für eine bessere Prognose.` : t("Deine Messintervalle decken den bisherigen Zeitraum ab.")}${s.energy_type === "gas" ? msg` Gas wird mit ${escape(s.gas_factor)} kWh/m³ umgerechnet. Prüfe den Faktor anhand deiner Rechnung.` : ""}</div>` : ""}${
       this.section === "readings"
-        ? msg`<article class="box"><div class="row"><h2>Deine Ablesungen</h2><button data-action="photo">Foto auslesen</button></div><p class="muted">Zählerstand in ${escape(s.source_unit)}. Ein Eintrag am gleichen Datum ersetzt den bisherigen Stand.</p>${this.table(
+        ? msg`<article class="box"><div class="row"><h2>Deine Ablesungen</h2><button data-action="photo">Foto auslesen · Beta</button></div><p class="muted">Zählerstand in ${escape(s.source_unit)}. Ein Eintrag am gleichen Datum ersetzt den bisherigen Stand.</p>${this.table(
             [t("Datum"), t("Zählerstand")],
             [...h.readings]
               .reverse()
@@ -633,7 +633,7 @@ class RadarApp extends HTMLElement {
       return;
     }
     const dialog = this.shadowRoot.querySelector("dialog");
-    dialog.innerHTML = msg`<form><h2>Zählerfoto auslesen</h2><p class="muted">Fotografiere die Ziffern möglichst gerade und scharf. Das Foto wird lokal verarbeitet. Prüfe den erkannten Wert vor dem Speichern.</p><label>Ablesedatum<input required name="date" type="date" value="${today()}" max="${today()}"></label><label>Foto auswählen<input required name="file" type="file" accept="image/jpeg,image/png"></label><details><summary>Bildausschnitt begrenzen (optional)</summary><p class="muted">Grenzen in Prozent des Bildes. Bei einem Gesamtfoto nur die Ziffernanzeige einschließen.</p>${[
+    dialog.innerHTML = msg`<form><h2>Zählerfoto auslesen · Beta</h2><p class="muted">Der Fotoscan ist eine Beta-Funktion und kann falsche Ziffern erkennen. Fotografiere die Anzeige möglichst gerade und scharf. Das Foto wird lokal verarbeitet. Prüfe den erkannten Wert immer vor dem Speichern.</p><label>Ablesedatum<input required name="date" type="date" value="${today()}" max="${today()}"></label><label>Foto auswählen<input required name="file" type="file" accept="image/jpeg,image/png"></label><details><summary>Bildausschnitt begrenzen (optional)</summary><p class="muted">Grenzen in Prozent des Bildes. Bei einem Gesamtfoto nur die Ziffernanzeige einschließen.</p>${[
       ["left", t("Links"), 0],
       ["top", t("Oben"), 0],
       ["right", t("Rechts"), 100],
@@ -645,7 +645,7 @@ class RadarApp extends HTMLElement {
       )
       .join(
         "",
-      )}</details><p class="form-error" role="alert"></p><div class="form-actions"><button type="button" class="close">Abbrechen</button><button type="submit" class="primary">Foto auslesen</button></div></form>`;
+      )}</details><p class="form-error" role="alert"></p><div class="form-actions"><button type="button" class="close">Abbrechen</button><button type="submit" class="primary">Foto auslesen · Beta</button></div></form>`;
     dialog.querySelector(".close").onclick = () => dialog.close();
     dialog.showModal();
     dialog.querySelector("form").onsubmit = async (e) => {
@@ -694,7 +694,7 @@ class RadarApp extends HTMLElement {
         form.querySelector(".form-error").textContent =
           t(err.message) || t("Auslesen fehlgeschlagen");
         button.disabled = false;
-        button.textContent = t("Foto auslesen");
+        button.textContent = t("Foto auslesen · Beta");
       }
     };
   }
